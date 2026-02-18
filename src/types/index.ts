@@ -1,79 +1,70 @@
-export type Category = 'Goods' | 'Services' | 'Software';
-export type RFPStatus = 'Draft' | 'Published' | 'Closed' | 'Cancelled';
-export type VendorStatus = 'Active' | 'Inactive' | 'Pending';
-export type VendorType = 'Goods' | 'Services' | 'Software' | 'Mixed';
-export type ProposalStatus = 'Submitted' | 'Under Review' | 'Accepted' | 'Rejected';
-export type EvaluationMethod = 'Lowest Price' | 'Technical Score' | 'Combined';
-
-export interface RFPItem {
+export interface Subject {
   id: string;
   name: string;
-  specification: string;
-  quantity: number;
-  unit: string;
+  icon: string;
+  chapters: string[];
+  totalQuestions: number;
+  xpValue: number;
 }
 
-export interface RFP {
+export interface Question {
   id: string;
+  subjectId: string;
+  chapter: string;
+  difficulty: 'novice' | 'intermediate' | 'advanced';
+  questionText: string;
+  latexContent?: string;
+  options: QuestionOption[];
+  correctAnswerId: string;
+  explanation: ExplanationStep[];
+  timeLimit?: number;
+  xpValue: number;
+}
+
+export interface QuestionOption {
+  id: string;
+  text: string;
+  latexContent?: string;
+}
+
+export interface ExplanationStep {
+  step: number;
   title: string;
-  category: Category;
-  department: string;
-  issueDate: string;
-  closingDate: string;
-  status: RFPStatus;
-  evaluationMethod: EvaluationMethod;
-  items: RFPItem[];
-  proposalCount: number;
-  createdAt: string;
-  updatedAt: string;
+  content: string;
 }
 
-export interface Vendor {
-  id: string;
-  name: string;
-  type: VendorType;
-  status: VendorStatus;
-  email: string;
-  phone: string;
-  address: string;
-  createdAt: string;
+export interface QuizConfig {
+  subjectId: string | null;
+  chapters: string[];
+  difficulty: 'novice' | 'intermediate' | 'advanced';
+  questionCount: number;
+  customQuestionCount?: number;
 }
 
-export interface ProposalItem {
-  id: string;
-  itemId: string;
-  itemName: string;
-  unitPrice: number;
-  quantity: number;
-  tax: number;
-  lineTotal: number;
+export interface QuizState {
+  config: QuizConfig;
+  questions: Question[];
+  currentQuestionIndex: number;
+  answers: Record<string, string>;
+  flaggedQuestions: Set<string>;
+  startTime: number | null;
+  endTime: number | null;
+  timeRemaining: number;
+  status: 'setup' | 'in-progress' | 'completed';
 }
 
-export interface Proposal {
-  id: string;
-  rfpId: string;
-  rfpTitle: string;
-  vendorId: string;
-  vendorName: string;
-  items: ProposalItem[];
-  subtotal: number;
-  tax: number;
-  totalAmount: number;
-  status: ProposalStatus;
-  submittedDate: string;
-  notes: string;
+export interface QuizResult {
+  totalQuestions: number;
+  correctAnswers: number;
+  incorrectAnswers: number;
+  skippedQuestions: number;
+  timeTaken: number;
+  xpEarned: number;
+  accuracy: number;
+  rank: string;
+  streakDays: number;
 }
 
-export interface DashboardStats {
-  totalRFPs: number;
-  activeRFPs: number;
-  pendingEvaluations: number;
-  vendorsParticipated: number;
-}
+export type ComplexityLevel = 'novice' | 'intermediate' | 'advanced';
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-}
+export type QuizStatus = 'setup' | 'in-progress' | 'completed';

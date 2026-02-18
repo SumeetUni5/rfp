@@ -1,22 +1,24 @@
 'use client';
 
-import { ReactNode } from 'react';
-import { Sidebar } from './Sidebar';
-import { Header } from './Header';
+import * as React from 'react';
+import { cn } from '@/utils/cn';
 
-export interface LayoutProps {
-  children: ReactNode;
+interface LayoutProps {
+  children: React.ReactNode;
+  className?: string;
+  fullWidth?: boolean;
 }
 
-export function Layout({ children }: LayoutProps) {
+export function Layout({ children, className, fullWidth }: LayoutProps) {
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Sidebar />
-      <div className="ml-64 pt-16">
-        <Header />
-        <main className="p-8">
-          {children}
-        </main>
+    <div className={cn('min-h-screen bg-body', className)}>
+      <div
+        className={cn(
+          'mx-auto',
+          fullWidth ? 'w-full' : 'max-w-7xl px-4 sm:px-6 lg:px-8 py-8'
+        )}
+      >
+        {children}
       </div>
     </div>
   );

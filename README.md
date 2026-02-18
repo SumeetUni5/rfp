@@ -1,149 +1,138 @@
-# RFP Manager - Enterprise Procurement Platform
+# Student Assessment Portal
 
-A production-ready RFP (Request for Proposal) SaaS web application frontend built with Next.js 14, TypeScript, and Tailwind CSS.
+A high-fidelity, production-ready Student Assessment Portal built with Next.js 14, TypeScript, Tailwind CSS, and Framer Motion. This application features an "Isomorphic" aesthetic - clean, sophisticated, professional, and minimalist.
 
 ## Features
 
-### Core Functionality
-- **Dashboard**: Overview of RFP activities with key metrics and recent activities
-- **RFP Management**: Create, view, and manage Requests for Proposal
-- **Vendor Management**: Maintain vendor partnerships and information
-- **Proposal Tracking**: Review and evaluate vendor proposals
-- **Evaluation System**: Compare proposals and select winning vendors
+### Design System
+- **Color Palette**: Deep indigo/violet primary, emerald success, amber warning
+- **Custom Shadows**: Subtle card shadows with primary glow effects
+- **Glassmorphism Utilities**: Backdrop blur with semi-transparent backgrounds
+- **Responsive Design**: Mobile-first approach with collapsible sidebars
 
-### Key Pages
-- `/dashboard` - Main dashboard with statistics and quick actions
-- `/rfp` - List all RFPs with filtering and search
-- `/rfp/create` - Create new RFPs with dynamic item lists
-- `/rfp/[id]` - View RFP details with tabs for Overview, Items, Proposals, and Evaluation
-- `/vendors` - Manage vendor database
-- `/proposals` - Track all submitted proposals
-- `/settings` - User preferences and notification settings
+### Pages
 
-## Tech Stack
+1. **Quiz Configuration (`/quiz/setup`)**
+   - Split-view layout with session parameters and launchpad sidebar
+   - Subject selection with hover lift effects
+   - Chapter selector with pill inputs
+   - Complexity slider (Novice, Intermediate, Advanced)
+   - Question count segmented control with custom input
+   - Animated rocket launch button with XP/streak preview
 
-- **Framework**: Next.js 14 (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
-- **Icons**: Lucide React
-- **Package Manager**: pnpm
-- **UI Components**: Custom component library (Button, Card, Table, Tabs, Badge, Input, Select, etc.)
+2. **Assessment Interface (`/quiz/assessment`)**
+   - Distraction-free "Zen Mode" interface
+   - Real-time countdown timer (amber when < 5 mins)
+   - Question navigation sidebar with status indicators:
+     - Solid Primary: Current Question
+     - Green Ring: Answered
+     - Orange Dot: Flagged for Review
+     - Gray: Unvisited
+   - KaTeX rendering for mathematical formulas
+   - Large, accessible radio cards with glow effects
+   - Flag for review functionality
+
+3. **Results Dashboard (`/quiz/results`)**
+   - "Mastery Unlocked" banner with animated badge
+   - Rank system (Beginner to Grandmaster)
+   - Grid stats: Score, Accuracy, Time, XP Earned
+   - Accordion question review with:
+     - Logical Decomposition explanations
+     - Step-by-step answer analysis
+
+### Technical Stack
+- **Next.js 14** with App Router
+- **TypeScript** for type safety
+- **Tailwind CSS 4** for styling
+- **Framer Motion** for animations
+- **Zustand** for state management
+- **KaTeX** for math rendering
+- **Lucide React** for icons
 
 ## Getting Started
 
-### Prerequisites
-- Node.js 18+ installed
-- pnpm package manager installed
-
-### Installation
-
-1. Install dependencies:
 ```bash
+# Install dependencies
 pnpm install
-```
 
-2. Run the development server:
-```bash
+# Run development server
 pnpm dev
-```
 
-3. Open [http://localhost:3000](http://localhost:3000) with your browser
+# Build for production
+pnpm build
+
+# Start production server
+pnpm start
+```
 
 ## Project Structure
 
 ```
 src/
- ├─ app/                 # Next.js App Router pages
- │   ├─ dashboard/       # Dashboard page
- │   ├─ rfp/             # RFP management pages
- │   │   ├─ create/      # Create new RFP
- │   │   └─ [id]/        # RFP detail page
- │   ├─ vendors/         # Vendor management
- │   ├─ proposals/       # Proposal tracking
- │   ├─ settings/        # User settings
- │   └─ layout.tsx       # Root layout
- ├─ components/          # React components
- │   ├─ layout/          # Layout components (Sidebar, Header)
- │   └─ ui/              # UI components (Button, Card, Table, etc.)
- ├─ mock/                # Mock data
- │   ├─ rfps.ts          # RFP data
- │   ├─ vendors.ts       # Vendor data
- │   ├─ proposals.ts     # Proposal data
- │   └─ user.ts          # User data
- ├─ types/               # TypeScript type definitions
- │   └─ index.ts         # All type definitions
- └─ utils/               # Utility functions
-     └─ cn.ts            # Class name merger and helpers
+├── app/                    # Next.js App Router pages
+│   ├── page.tsx           # Home page with redirect
+│   ├── layout.tsx         # Root layout
+│   ├── globals.css        # Global styles
+│   └── quiz/
+│       ├── setup/         # Quiz configuration
+│       ├── assessment/    # Quiz taking interface
+│       └── results/       # Results dashboard
+├── components/
+│   ├── ui/                # Reusable UI components
+│   │   ├── Button.tsx
+│   │   ├── Card.tsx
+│   │   ├── Badge.tsx
+│   │   ├── Slider.tsx
+│   │   ├── SegmentedControl.tsx
+│   │   ├── RadioCard.tsx
+│   │   ├── Accordion.tsx
+│   │   ├── Progress.tsx
+│   │   └── KaTeX.tsx
+│   └── layout/            # Layout components
+│       ├── Layout.tsx
+│       └── AssessmentLayout.tsx
+├── store/
+│   └── quizStore.ts       # Zustand state management
+├── types/
+│   └── index.ts           # TypeScript interfaces
+├── mock/
+│   ├── subjects.ts        # Mock subjects & questions
+│   └── index.ts
+└── utils/
+    └── cn.ts              # Utility functions
 ```
-
-## Data Models
-
-### RFP
-- Title, Category (Goods/Services/Software)
-- Department, Issue/Closing Dates
-- Status (Draft/Published/Closed/Cancelled)
-- Evaluation Method
-- Dynamic Items List
-
-### Vendor
-- Name, Type, Status
-- Contact Information
-- Address
-
-### Proposal
-- Vendor Reference
-- RFP Reference
-- Line Items with Pricing
-- Tax Calculations
-- Status (Submitted/Under Review/Accepted/Rejected)
-
-## Key Features Implementation
-
-### RFP Lifecycle
-1. **Create**: Draft RFP with items
-2. **Publish**: Make RFP available to vendors
-3. **Proposals**: Vendors submit proposals
-4. **Evaluation**: Compare proposals using different criteria
-5. **Selection**: Approve vendor and close RFP
-
-### Evaluation Methods
-- **Lowest Price**: Automatic lowest bid selection
-- **Technical Score**: Manual evaluation based on capabilities
-- **Combined**: Balanced price and technical evaluation
 
 ## State Management
 
-- React hooks for local state
-- No external state management library
-- Mock data stored in-memory
-- Async operations simulated with setTimeout
+The application uses Zustand with persistence for quiz state:
 
-## Design Principles
+- `config`: Quiz configuration (subject, chapters, difficulty, count)
+- `questions`: Array of question objects
+- `answers`: User's answers keyed by question ID
+- `flaggedQuestions`: Questions marked for review
+- `timeRemaining`: Countdown timer
+- `status`: Quiz status (setup, in-progress, completed)
 
-- Clean, enterprise-grade UI
-- Responsive layout for all screen sizes
-- Consistent component styling
-- Accessibility considerations
-- Type-safe code with TypeScript
+## Design Tokens
 
-## Future Enhancements
+### Colors
+```css
+--primary: #4F46E5 (Indigo-600)
+--primary-dark: #3730A3 (Indigo-800)
+--primary-soft: #EEF2FF (Indigo-50)
+--success: #10B981 (Emerald-500)
+--success-soft: #D1FAE5 (Emerald-100)
+--warning: #F59E0B (Amber-500)
+--warning-soft: #FEF3C7 (Amber-100)
+```
 
-The application is designed to be easily connected to a backend API:
-- Replace mock data with API calls
-- Add authentication/authorization
-- Implement real database storage
-- Add real-time notifications
-- Integrate with payment systems
-- Add advanced reporting
-
-## Development Notes
-
-- All components are reusable and composable
-- No hardcoded magic values
-- Comprehensive TypeScript types
-- Proper error handling patterns
-- Comments only where necessary for complex logic
+### Shadows
+```css
+--shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.05)
+--shadow-floating: 0 20px 25px -5px rgba(0, 0, 0, 0.05)
+--shadow-glow-primary: 0 0 20px rgba(79, 70, 229, 0.15)
+```
 
 ## License
 
-Proprietary - All rights reserved
+MIT
